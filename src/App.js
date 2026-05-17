@@ -1,306 +1,51 @@
-import { useEffect, useState } from "react";
-
+import React from "react";
 import "./App.css";
 
+// Lista e pastër e ushqimeve për restorantin
 const foodItems = [
   {
     id: 1,
     name: "Margherita Pizza",
     price: 8,
-    image:
-      "https://images.unsplash.com/photo-1601924582970-9238bcb495d9",
+    image: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=500",
   },
-
   {
     id: 2,
     name: "Carbonara Pasta",
-    price: 10,
-    image:
-      "https://images.unsplash.com/photo-1525755662778-989d0524087e",
-  },
-
-  {
-    id: 3,
-    name: "Tiramisu",
-    price: 6,
-    image:
-      "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9",
+    price: 12,
+    image: "https://images.unsplash.com/photo-1612874742237-6526221588e3?w=500",
   },
 ];
 
 function App() {
-
-  const [user, setUser] = useState(null);
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [username, setUsername] = useState("");
-  const [bio, setBio] = useState("");
-
-  const [cart, setCart] = useState([]);
-
-  // CHECK USER
-  
-
-      
-      
-
-      
-  
-
-  // 
-
-  // REGIS
-
-  // LOGOUT
-  const handleLogout = async () => {
-
-    await supabase.auth.signOut();
-
-    setUser(null);
-  };
-
-  // GET PROFILE
-  const getProfile = async (userId) => {
-
-    const { data } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", userId)
-      .single();
-
-    if (data) {
-
-      setUsername(data.username || "");
-      setBio(data.bio || "");
-    }
-  };
-
-  // SAVE PROFILE
-  const saveProfile = async () => {
-
-    if (!user) {
-
-      alert("Please login first");
-
-      return;
-    }
-
-    const { error } = await supabase
-      .from("profiles")
-      .upsert({
-        id: user.id,
-        username,
-        bio,
-      });
-
-    if (error) {
-
-      alert(error.message);
-
-    } else {
-
-      alert("Profile saved!");
-    }
-  };
-
-  // ADD TO CART
-  const addToCart = (item) => {
-
-    setCart([...cart, item]);
-  };
-
-  // REMOVE FROM CART
-  const removeFromCart = (index) => {
-
-    const updatedCart = [...cart];
-
-    updatedCart.splice(index, 1);
-
-    setCart(updatedCart);
-  };
-
-  // TOTAL
-  const total = cart.reduce(
-    (sum, item) => sum + item.price,
-    0
-  );
-
-  // PLACE ORDER
-  const placeOrder = async () => {
-
-    if (!user) {
-
-      alert("Please login first");
-
-      return;
-    }
-
-    if (cart.length === 0) {
-
-      alert("Cart is empty");
-
-      return;
-    }
-
-    const { error } = await supabase
-      .from("cart_orders")
-      .insert([
-        {
-          user_id: user.id,
-          items: cart,
-          total: total,
-        },
-      ]);
-
-    if (error) {
-
-      alert(error.message);
-
-    } else {
-
-      alert("Order placed!");
-
-      setCart([]);
-    }
-  };
-
   return (
+    <div className="min-h-screen bg-gray-50 text-gray-800 font-sans">
+      {/* Header i thjeshtë për test */}
+      <header className="bg-red-600 text-white p-6 shadow-md text-center">
+        <h1 className="text-3xl font-bold tracking-wide">Bella Vita Restaurant</h1>
+        <p className="text-sm mt-1 opacity-90">Shija e vërtetë e traditës</p>
+      </header>
 
-    <div className="container">
-
-      <h1>Bella Vita 🍝</h1>
-
-      {user ? (
-
-        <div className="profile-box">
-
-          <h2>{user.email}</h2>
-
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) =>
-              setUsername(e.target.value)
-            }
-          />
-
-          <textarea
-            placeholder="Your bio"
-            value={bio}
-            onChange={(e) =>
-              setBio(e.target.value)
-            }
-          />
-
-          <button onClick={saveProfile}>
-            Save Profile
-          </button>
-
-          <button onClick={handleLogout}>
-            Logout
-          </button>
-
+      {/* Menuja e Ushqimeve */}
+      <main className="max-w-6xl mx-auto p-8">
+        <h2 className="text-2xl font-semibold border-b pb-2 mb-6">Menuja Jonë Kryesore</h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {foodItems.map((item) => (
+            <div key={item.id} className="bg-white rounded-lg shadow p-4 flex items-center space-x-4">
+              <img 
+                src={item.image} 
+                alt={item.name} 
+                className="w-24 h-24 object-cover rounded-md"
+              />
+              <div>
+                <h3 className="text-xl font-bold">{item.name}</h3>
+                <p className="text-red-600 font-semibold mt-1">${item.price}</p>
+              </div>
+            </div>
+          ))}
         </div>
-
-      ) : (
-
-        <div className="auth-box">
-
-          <input
-            type="email"
-            placeholder="Email"
-            onChange={(e) =>
-              setEmail(e.target.value)
-            }
-          />
-
-          <input
-            type="password"
-            placeholder="Password"
-            onChange={(e) =>
-              setPassword(e.target.value)
-            }
-          />
-
-          <button onClick={handleRegister}>
-            Register
-          </button>
-
-          <button onClick={handleLogin}>
-            Login
-          </button>
-
-        </div>
-
-      )}
-
-      <h2>Our Menu 🍕</h2>
-
-      <div className="menu">
-
-        {foodItems.map((item) => (
-
-          <div className="card" key={item.id}>
-
-            <img
-              src={item.image}
-              alt={item.name}
-            />
-
-            <h3>{item.name}</h3>
-
-            <p>€{item.price}</p>
-
-            <button
-              onClick={() => addToCart(item)}
-            >
-              Add to Cart
-            </button>
-
-          </div>
-
-        ))}
-
-      </div>
-
-      <div className="cart">
-
-        <h2>Shopping Cart 🛒</h2>
-
-        {cart.map((item, index) => (
-
-          <div
-            key={index}
-            className="cart-item"
-          >
-
-            <p>
-              {item.name} - €{item.price}
-            </p>
-
-            <button
-              onClick={() =>
-                removeFromCart(index)
-              }
-            >
-              Remove
-            </button>
-
-          </div>
-
-        ))}
-
-        <h3>Total: €{total}</h3>
-
-        <button onClick={placeOrder}>
-          Place Order
-        </button>
-
-      </div>
-
+      </main>
     </div>
   );
 }
