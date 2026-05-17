@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "./supabase";
+
 import "./App.css";
 
 const foodItems = [
@@ -41,59 +41,17 @@ function App() {
   const [cart, setCart] = useState([]);
 
   // CHECK USER
-  useEffect(() => {
+  
 
-    supabase.auth.getUser().then(({ data }) => {
+      
+      
 
-      if (data.user) {
+      
+  
 
-        setUser(data.user);
+  // 
 
-        getProfile(data.user.id);
-      }
-    });
-
-  }, []);
-
-  // LOGIN
-  const handleLogin = async () => {
-
-    const { data, error } =
-      await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-    if (error) {
-
-      alert(error.message);
-
-    } else {
-
-      setUser(data.user);
-
-      getProfile(data.user.id);
-    }
-  };
-
-  // REGISTER
-  const handleRegister = async () => {
-
-    const { error } =
-      await supabase.auth.signUp({
-        email,
-        password,
-      });
-
-    if (error) {
-
-      alert(error.message);
-
-    } else {
-
-      alert("Account created!");
-    }
-  };
+  // REGIS
 
   // LOGOUT
   const handleLogout = async () => {
