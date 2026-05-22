@@ -1,22 +1,26 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-function Navbar() {
+function Menu() {
   return (
-    <nav className="bg-white shadow-md sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-        <Link to="/" className="text-2xl font-black text-red-600 tracking-wider">
-          BELLA VITA
-        </Link>
-        <div className="space-x-6 font-semibold text-gray-700">
-          <Link to="/" className="hover:text-red-600 transition">Kreu</Link>
-          <Link to="/menu" className="hover:text-red-600 transition">Menuja</Link>
-          <Link to="/about" className="hover:text-red-600 transition">Rreth Nesh</Link>
-          <Link to="/contact" className="hover:text-red-600 transition">Kontakt</Link>
+    <div className="max-w-4xl mx-auto p-8 my-8 text-center">
+      <h1 className="text-4xl font-bold text-gray-800 mb-6">Menuja Jonë</h1>
+      <p className="text-lg text-gray-600 mb-8">
+        Zgjidhni nga pjatat tona tradicionale dhe speciale.
+      </p>
+      
+      {/* Këtu mund të shtosh listën e pjatave më vonë */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+        <div className="p-4 border rounded-lg shadow-sm bg-white">
+          <h3 className="text-xl font-semibold text-gray-800">Pica Speciale</h3>
+          <p className="text-gray-600">Salcë domate, mocarela, prshutë, kërpudha.</p>
+        </div>
+        <div className="p-4 border rounded-lg shadow-sm bg-white">
+          <h3 className="text-xl font-semibold text-gray-800">Pasta Carbonara</h3>
+          <p className="text-gray-600">Pana, pançetë, vezë, djathë kaçkavall.</p>
         </div>
       </div>
-    </nav>
+    </div>
   );
 }
 
-export default Navbar;
+export default Menu;
